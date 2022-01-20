@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import set = Reflect.set;
 
 export const isFalsy = (value: any) => (value === 0 ? false : !value);
 
@@ -19,6 +20,21 @@ export const useMount = (callback: () => void) => {
     callback();
   }, []);
 };
+export const useArray = <T>(initArray: Array<T>) => {
+  const [value, setValue] = useState(initArray);
+  const clear = () => {
+    setValue([]);
+  };
+  const removeIndex = (index: number) => {
+    const copy = [...value];
+    setValue(copy.splice(index, 1));
+  };
+  const add = (item: T) => {
+    setValue([...value, item]);
+  };
+  return { value, setValue, clear, removeIndex, add };
+};
+
 export const useDebounce = <V>(value: V, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
