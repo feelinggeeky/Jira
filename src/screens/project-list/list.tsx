@@ -1,44 +1,70 @@
 import React from "react";
 import { User } from "screens/project-list/search-panel";
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
+import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   personId: string;
   pin: boolean;
   organization: string;
+  created: number;
 }
 
-interface ListProps {
-  list: Project[];
+//ListProps由Table的props和users组成
+interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
-export const List = ({ users, list }: ListProps) => {
+//不管传入什么键值对，对象，先把users取出来，剩下的放入props
+type PropsType = Omit<ListProps, "users">;
+export const List = ({ users, ...props }: ListProps) => {
   return (
     <Table
+      rowKey={"ID"}
       pagination={false}
       columns={[
         {
           title: "名称",
           dataIndex: "name",
           sorter: (a, b) => a.name.localeCompare(b.name),
+          render(value, project) {
+            return (
+              <Link to={`projects/${String(project.id)}`}>{project.name}</Link>
+            );
+          },
+        },
+        {
+          title: "部门",
+          dataIndex: "organization",
         },
         {
           title: "负责人",
           render(value, project) {
             return (
               <span>
-                {" "}
                 {users.find((user) => user.id === project.personId)?.name ||
                   "未知"}
               </span>
             );
           },
         },
+        {
+          title: "创建时间",
+          render(value, project) {
+            return (
+              <span>
+                {project.created
+                  ? dayjs(project.created).format("YYYY-MM-DD")
+                  : ""}
+              </span>
+            );
+          },
+        },
       ]}
-      dataSource={list}
-    ></Table>
+      {...props}
+    />
   );
 };
