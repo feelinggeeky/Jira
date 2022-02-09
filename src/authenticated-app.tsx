@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { Button, Dropdown, Menu } from "antd";
 import { Row } from "components/lib";
 import { Route, Routes } from "react-router";
+import { ProjectScreen } from "screens/project";
 
 /**
  * grid 和 flex 各自的应用场景
@@ -28,7 +29,7 @@ export default function AuthenticatedApp() {
       <Main>
         <Routes>
           <Route path={"projects"} element={<ProjectListScreen />} />
-          {/*  <Route path={"projects/:projectId/*"} element={<ProjectScreen />} />*/}
+          <Route path={"projects/:projectId/*"} element={<ProjectScreen />} />
           <Route index element={<ProjectListScreen />} />
         </Routes>
       </Main>
