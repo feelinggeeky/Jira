@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List, Project } from "./list";
-import { cleanObject, useDebounce, useMount } from "../../utils";
+import {
+  cleanObject,
+  useDebounce,
+  useDocumentTitle,
+  useMount,
+} from "../../utils";
 import * as qs from "qs";
 import { useHttp } from "../../utils/http";
 import styled from "@emotion/styled";
@@ -12,6 +17,8 @@ import { useUsers } from "utils/users";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen = () => {
+  useDocumentTitle("项目列表", false);
+
   const [param, setParam] = useState({
     name: "",
     personId: "",

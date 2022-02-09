@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "screens/project-list/search-panel";
+import { User } from "types/user";
 import { Table, TableProps } from "antd";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -23,7 +23,7 @@ type PropsType = Omit<ListProps, "users">;
 export const List = ({ users, ...props }: ListProps) => {
   return (
     <Table
-      rowKey={"ID"}
+      rowKey={"id"}
       pagination={false}
       columns={[
         {
