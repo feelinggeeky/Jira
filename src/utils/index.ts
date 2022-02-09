@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import set = Reflect.set;
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
@@ -63,7 +63,9 @@ export const useDocumentTitle = (
   title: string,
   keepOnUnmount: boolean = true
 ) => {
-  const oldTitle = document.title;
+  const oldTitle = useRef(document.title).current;
+  // 页面加载时: oldTitle === 原title  'React App'
+  // 加载后: oldTitle === 传入的title
   console.log("渲染时的oldTitle", oldTitle);
   useEffect(() => {
     document.title = title;
@@ -73,9 +75,10 @@ export const useDocumentTitle = (
     //页面被卸载的时候调用
     return () => {
       if (!keepOnUnmount) {
+        //如果不指定依赖，读到的就是原title
         console.log("卸载的oldTitle", oldTitle);
         document.title = oldTitle;
       }
     };
-  }, []);
+  }, [keepOnUnmount, oldTitle]);
 };
